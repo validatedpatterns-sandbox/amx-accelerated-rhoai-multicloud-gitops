@@ -7,16 +7,32 @@ clusterGroup:
     - golang-external-secrets
     - config-demo
     - hello-world
+    - redhat-ods-operator:
+        operatorGroup: true
+        targetNamespaces: ""
   subscriptions:
     acm:
       name: advanced-cluster-management
       namespace: open-cluster-management
       channel: release-2.9
       #csv: advanced-cluster-management.v2.6.1
+    rhods:
+      name: rhods-operator
+      namespace: redhat-ods-operator
+      source: redhat-operators
+      sourceNamespace: openshift-marketplace
+      channel: stable
+    ovms:
+      name: ovms-operator
+      namespace: openshift-operators
+      channel: alpha
+      source: certified-operators
+      sourceNamespace: openshift-marketplace
   projects:
     - hub
     - config-demo
     - hello-world
+    - redhat-ods-operator
   # Explicitly mention the cluster-state based overrides we plan to use for this pattern.
   # We can use self-referential variables because the chart calls the tpl function with these variables defined
   sharedValueFiles:
@@ -68,6 +84,16 @@ clusterGroup:
       namespace: hello-world
       project: hello-world
       path: charts/all/hello-world
+    rhods-operator:
+      name: rhods-operator
+      namespace: redhat-ods-operator
+      project: redhat-ods-operator
+      path: charts/all/rhods-operator
+    ovms-operator:
+      name: ovms-operator
+      namespace: openshift-operators
+      project: redhat-ods-operator
+      path: charts/all/openvino
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
     # The default schedule is every 10 minutes: imperative.schedule
