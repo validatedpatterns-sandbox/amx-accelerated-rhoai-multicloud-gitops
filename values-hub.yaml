@@ -9,7 +9,7 @@ clusterGroup:
     - hello-world
     - redhat-ods-operator:
         operatorGroup: true
-        targetNamespaces: ""
+        targetNamespaces:
   subscriptions:
     acm:
       name: advanced-cluster-management
