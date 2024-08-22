@@ -7,6 +7,7 @@ clusterGroup:
     - golang-external-secrets
     - config-demo
     - hello-world
+    - openshift-nfd
     - redhat-ods-operator:
         operatorGroup: true
         targetNamespaces:
@@ -28,6 +29,11 @@ clusterGroup:
       channel: alpha
       source: certified-operators
       sourceNamespace: openshift-marketplace
+    nfd:
+      name: nfd
+      namespace: openshift-nfd
+      channel: stable
+      source: redhat-operators
   projects:
     - hub
     - config-demo
@@ -94,6 +100,18 @@ clusterGroup:
       namespace: openshift-operators
       project: redhat-ods-operator
       path: charts/all/openvino
+    nfd:
+      name: nfd
+      namespace: openshift-nfd
+      project: openshift-nfd
+      path: charts/all/nfd
+      ignoreDifferences:
+      - group: nfd.openshift.io
+        kind: NodeFeatureDiscovery
+        jqPathExpressions:
+        - '.spec.customConfig'
+        - '.spec.topologyupdater'
+        
   imperative:
     # NOTE: We *must* use lists and not hashes. As hashes lose ordering once parsed by helm
     # The default schedule is every 10 minutes: imperative.schedule
